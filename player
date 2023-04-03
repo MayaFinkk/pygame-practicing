@@ -1,0 +1,104 @@
+import sys
+import pygame
+
+pygame.init()
+clock = pygame.time.Clock()
+
+screen = pygame.display.set_mode((400, 400))
+pygame.display.set_caption('testing party popper animation')
+
+image = '/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa1.png'
+ghost_left = '/Users/maya/Desktop/pine_lemonade/pictures/folderforghosts/ghost_left.png'
+ghost_right = '/Users/maya/Desktop/pine_lemonade/pictures/folderforghosts/ghost_right.png'
+
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self, image, x_pos, y_pos):
+        super().__init__()
+        self.speed = 2
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.is_animating = False
+
+        self.image = pygame.Surface([80, 80])
+        self.image = pygame.image.load(image)
+        self.rect = self.image.get_rect(midbottom=(self.x_pos, self.y_pos))
+        self.midbottom = [self.x_pos, self.y_pos]
+
+        self.sprites = []
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa1.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa2.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa3.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa4.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa5.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa6_.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa7.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa8.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa9.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa10.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa11.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa12.png'))
+        self.sprites.append(
+            pygame.image.load('/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa13.png'))
+        self.current_sprite = 0
+
+    def animate(self):
+        self.is_animating = True
+
+    def update(self):
+        if self.is_animating:
+            self.current_sprite += 0.2
+            if self.current_sprite >= len(self.sprites):
+                self.current_sprite = 0
+                self.is_animating = False
+            self.image = self.sprites[int(self.current_sprite)]
+
+    def move(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_d]:
+            self.rect.x += self.speed
+            self.change_icon(ghost_right)
+        elif keys[pygame.K_a]:
+            self.rect.x -= self.speed
+            self.change_icon(ghost_left)
+
+        if keys[pygame.K_w]:
+            self.rect.y -= self.speed
+        elif keys[pygame.K_s]:
+            self.rect.y += self.speed
+
+    def change_icon(self, new_image):
+        self.image = pygame.image.load(new_image).convert_alpha()
+
+
+player = Player(image, 200, 200)
+player_group = pygame.sprite.Group()
+player_group.add(player)
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:
+                player.animate()
+
+    screen.fill('white')
+    player.move()
+    player_group.draw(screen)
+    player_group.update()
+    pygame.display.update()
+    clock.tick(60)
