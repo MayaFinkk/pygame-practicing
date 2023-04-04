@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
 
         self.image = pygame.Surface([80, 80])
         self.image = pygame.image.load(image)
-        self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
+        self.rect = self.image.get_rect(midbottom=(self.x_pos, self.y_pos))
         self.midbottom = [self.x_pos, self.y_pos]
 
         self.sprites = []
