@@ -1,15 +1,11 @@
 import sys
+
 import pygame
 
 pygame.init()
 clock = pygame.time.Clock()
 
 screen = pygame.display.set_mode((400, 400))
-pygame.display.set_caption('testing party popper animation')
-
-image = '/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa1.png'
-ghost_left = '/Users/maya/Desktop/pine_lemonade/pictures/folderforghosts/ghost_left.png'
-ghost_right = '/Users/maya/Desktop/pine_lemonade/pictures/folderforghosts/ghost_right.png'
 
 
 class Player(pygame.sprite.Sprite):
@@ -22,7 +18,7 @@ class Player(pygame.sprite.Sprite):
 
         self.image = pygame.Surface([80, 80])
         self.image = pygame.image.load(image)
-        self.rect = self.image.get_rect(midbottom=(self.x_pos, self.y_pos))
+        self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
         self.midbottom = [self.x_pos, self.y_pos]
 
         self.sprites = []
@@ -83,11 +79,15 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load(new_image).convert_alpha()
 
 
-player = Player(image, 200, 200)
+image = '/Users/maya/prj/some_kind_of_game/ghost/party_popper_animation/ppa1.png'
+ghost_left = '/Users/maya/Desktop/pine_lemonade/pictures/folderforghosts/ghost_left.png'
+ghost_right = '/Users/maya/Desktop/pine_lemonade/pictures/folderforghosts/ghost_right.png'
+player = Player(ghost_right, 120, 120)
 player_group = pygame.sprite.Group()
 player_group.add(player)
 
 while True:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -96,7 +96,7 @@ while True:
             if event.key == pygame.K_p:
                 player.animate()
 
-    screen.fill('white')
+    screen.fill('gray')
     player.move()
     player_group.draw(screen)
     player_group.update()
